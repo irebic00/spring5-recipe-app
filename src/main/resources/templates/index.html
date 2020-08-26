@@ -5,16 +5,28 @@
     <title>Bookstore</title>
 </head>
 <body>
-<h1>Book List</h1>
+<h1>Recipes</h1>
 
 <table>
     <tr>
         <th>ID</th>
-        <th>Category</th>
+        <th>Description</th>
+        <th>Preparation Time</th>
+        <th>Cook Time</th>
+        <th>Servings</th>
+        <th>Source</th>
+        <th>Url</th>
+        <th>Directions</th>
     </tr>
-    <tr th:each="category : ${categories}">
-        <td th:text="${category.id}"></td>
-        <td th:text="${category.description}"></td>
+    <tr th:each="recipe : ${recipes}">
+        <td th:text="${recipe.id}"></td>
+        <td th:text="${recipe.description}"></td>
+        <td th:text="${recipe.prepTime}"></td>
+        <td th:text="${recipe.cookTime}"></td>
+        <td th:text="${recipe.servings}"></td>
+        <td th:text="${recipe.source}"></td>
+        <td th:text="${recipe.url}"></td>
+        <td th:text="${recipe.directions}"></td>
     </tr>
 </table>
 
