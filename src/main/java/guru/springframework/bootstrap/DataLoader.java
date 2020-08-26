@@ -41,7 +41,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         ingredient1.setDescription("clean guacamole");
 
         Recipe perfectGuacamole = new Recipe();
-        perfectGuacamole.getCategories().add(mexican);
+        perfectGuacamole.addCategory(mexican);
         perfectGuacamole.setCookTime(10);
         perfectGuacamole.setPrepTime(5);
         perfectGuacamole.setDescription("Traditional Mexican dish.");
@@ -51,9 +51,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         perfectGuacamole.setSource("Coolinarika");
         perfectGuacamole.setUrl("www.coolinarika.hr");
         perfectGuacamole.setNotes(perfectGuacamoleNotes);
-        perfectGuacamoleNotes.setRecipe(perfectGuacamole);
-        perfectGuacamole.getIngredients().add(ingredient1);
-        ingredient1.setRecipe(perfectGuacamole);
+        perfectGuacamole.addIngredient(ingredient1);
 
 
         Ingredient ingredient2 = new Ingredient();
@@ -64,7 +62,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         Notes spicyGrilledChickenTacosNotes = new Notes();
         spicyGrilledChickenTacosNotes.setRecipeNotes("Kind off Easy to cook");
         Recipe spicyGrilledChickenTacos = new Recipe();
-        spicyGrilledChickenTacos.getCategories().add(fastFood);
+        spicyGrilledChickenTacos.addCategory(fastFood);
         spicyGrilledChickenTacos.setCookTime(120);
         spicyGrilledChickenTacos.setPrepTime(15);
         spicyGrilledChickenTacos.setDescription("Super hot chick.");
@@ -74,9 +72,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         spicyGrilledChickenTacos.setSource("Coolinarika");
         spicyGrilledChickenTacos.setUrl("www.coolinarika.hr");
         spicyGrilledChickenTacos.setNotes(spicyGrilledChickenTacosNotes);
-        spicyGrilledChickenTacosNotes.setRecipe(spicyGrilledChickenTacos);
-        spicyGrilledChickenTacos.getIngredients().add(ingredient2);
-        ingredient2.setRecipe(spicyGrilledChickenTacos);
+        spicyGrilledChickenTacos.addIngredient(ingredient2);
 
         recipes.add(perfectGuacamole);
         recipes.add(spicyGrilledChickenTacos);
