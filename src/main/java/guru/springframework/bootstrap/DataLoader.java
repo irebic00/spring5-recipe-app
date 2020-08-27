@@ -4,6 +4,7 @@ import guru.springframework.model.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private final CategoryRepository categoryRepository;
@@ -30,7 +32,9 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         List<Recipe> recipes = new ArrayList<>();
 
         Category mexican = categoryRepository.findByDescription("Mexican").orElse(null);
+        log.info("Saved category: {}", mexican);
         Category fastFood = categoryRepository.findByDescription("Fast Food").orElse(null);
+        log.info("Saved category: {}", fastFood);
 
         Notes perfectGuacamoleNotes = new Notes();
         perfectGuacamoleNotes.setRecipeNotes("Easy to cook");
@@ -52,6 +56,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         perfectGuacamole.setUrl("www.coolinarika.hr");
         perfectGuacamole.setNotes(perfectGuacamoleNotes);
         perfectGuacamole.addIngredient(ingredient1);
+        log.info("Saved recipe: {}", perfectGuacamole);
 
 
         Ingredient ingredient2 = new Ingredient();
@@ -73,6 +78,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         spicyGrilledChickenTacos.setUrl("www.coolinarika.hr");
         spicyGrilledChickenTacos.setNotes(spicyGrilledChickenTacosNotes);
         spicyGrilledChickenTacos.addIngredient(ingredient2);
+        log.info("Saved recipe: {}", spicyGrilledChickenTacos);
 
         recipes.add(perfectGuacamole);
         recipes.add(spicyGrilledChickenTacos);
