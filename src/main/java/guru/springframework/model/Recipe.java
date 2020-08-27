@@ -1,15 +1,14 @@
 package guru.springframework.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Entity
 @ToString(exclude = {"image", "ingredients", "categories", "notes"})
 public class Recipe {
