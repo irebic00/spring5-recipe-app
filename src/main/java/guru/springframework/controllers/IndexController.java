@@ -19,7 +19,7 @@ public class IndexController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping({"", "/", "/index", "/index.html"})
+    @GetMapping({"", "/", "/index", "/show.html"})
     public String index(Model model) {
 
         Set<Recipe> recipes = recipeService.getRecipes();
