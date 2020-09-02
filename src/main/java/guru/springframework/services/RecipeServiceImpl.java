@@ -1,7 +1,7 @@
 package guru.springframework.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.commands.RecipeCommand;
+import guru.springframework.converter.ModelConverter;
 import guru.springframework.model.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +17,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ModelConverter modelConverter;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, ModelConverter modelConverter) {
         this.recipeRepository = recipeRepository;
+        this.modelConverter = modelConverter;
     }
 
     @Override
@@ -39,7 +40,13 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     @Transactional
     public RecipeCommand saveRecipeCommand(RecipeCommand command) {
-        Recipe detachedRecipe = objectMapper.convertValue(command, Recipe.class);
-        return objectMapper.convertValue(recipeRepository.save(detachedRecipe), RecipeCommand.class);
+        Recipe detachedRecipe = modelConverter.convertValue(command, Recipe.class);
+        return modelConverter.convertValue(recipeRepository.save(detachedRecipe), RecipeCommand.class);
+    }
+
+    @Override
+    public RecipeCommand findCommandById(Long id) {
+        RecipeCommand recipeCommand = modelConverter.convertValue(recipeRepository.findById(id).orElse(null), RecipeCommand.class);
+        return recipeCommand;
     }
 }

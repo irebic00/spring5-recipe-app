@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.converter.ModelConverter;
 import guru.springframework.model.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.Before;
@@ -20,11 +21,13 @@ public class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
     @Mock
     RecipeRepository recipeRepository;
+    @Mock
+    ModelConverter modelConverter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, modelConverter);
     }
 
     @Test
