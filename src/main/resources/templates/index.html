@@ -20,6 +20,16 @@
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<script th:inline="javascript">
+    function sendDelete(url) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", url, true);
+        xhttp.onload = function () {
+            window.location.reload(true);
+        };
+        xhttp.send();
+    }
+</script>
 
 <div class="card">
     <div class="card-header">
@@ -39,6 +49,7 @@
                 <th scope="col">Directions</th>
                 <th scope="col">View</th>
                 <th scope="col">Update</th>
+                <th scope="col">Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -53,6 +64,7 @@
                 <td th:text="${recipe.directions}"></td>
                 <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">View</a></td>
                 <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
+                <td><a class="delete" th:with="url = @{'/recipe/' + ${recipe.id} + '/delete'}" th:onclick="sendDelete([[${url}]])">Delete</a></td>
             </tr>
             </tbody>
         </table>

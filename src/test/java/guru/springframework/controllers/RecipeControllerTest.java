@@ -55,6 +55,15 @@ public class RecipeControllerTest {
     }
 
     @Test
+    public void testDeleteRecipe() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/recipe/1/delete"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/"));
+
+        Mockito.verify(recipeService, Mockito.times(1)).deleteRecipeCommandById(Mockito.anyLong());
+    }
+
+    @Test
     public void testPostNewRecipeForm() throws Exception {
         RecipeCommand command = new RecipeCommand();
         command.setId(2L);
@@ -63,9 +72,9 @@ public class RecipeControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                .param("id", "")
-//                .param("description", "some string")
-        )
+                        //.param("id", "")
+                        //.param("description", "some string")
+                        )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/recipe/2/show"));
     }
@@ -75,7 +84,7 @@ public class RecipeControllerTest {
         RecipeCommand command = new RecipeCommand();
         command.setId(2L);
 
-        Mockito.when(recipeService.findCommandById(Mockito.anyLong())).thenReturn(command);
+        Mockito.when(recipeService.findRecipeCommandById(Mockito.anyLong())).thenReturn(command);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/update"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

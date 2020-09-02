@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converter.ModelConverter;
 import guru.springframework.model.Recipe;
 import guru.springframework.repositories.RecipeRepository;
@@ -46,6 +47,26 @@ public class RecipeServiceImplTest {
     }
 
     @Test
+    public void getRecipeCommandByIdTest() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        Mockito.when(recipeRepository.findById(Mockito.anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        Mockito.when(modelConverter.convertValue(Mockito.any(), Mockito.any())).thenReturn(recipeCommand);
+
+        RecipeCommand commandById = recipeService.findRecipeCommandById(1L);
+
+        assertNotNull("Null recipe returned", commandById);
+        Mockito.verify(recipeRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verify(recipeRepository, Mockito.never()).findAll();
+    }
+
+    @Test
     public void getRecipesTest() {
 
         Recipe recipe = new Recipe();
@@ -56,5 +77,20 @@ public class RecipeServiceImplTest {
         Mockito.when(recipeRepository.findAll()).thenReturn(recipesData);
         assertEquals(1, recipeService.getRecipes().size());
         Mockito.verify(recipeRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    public void testDeleteById() throws Exception {
+
+        //given
+        Long idToDelete = Long.valueOf(2L);
+
+        //when
+        recipeService.deleteRecipeCommandById(idToDelete);
+
+        //no 'when', since method has void return type
+
+        //then
+        Mockito.verify(recipeRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
     }
 }

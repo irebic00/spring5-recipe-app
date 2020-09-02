@@ -2,12 +2,10 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.services.RecipeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RecipeController {
@@ -37,7 +35,7 @@ public class RecipeController {
     @GetMapping("/recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model) {
 
-        model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
+        model.addAttribute("recipe", recipeService.findRecipeCommandById(Long.valueOf(id)));
 
         return "recipe/recipeForm";
     }
@@ -47,5 +45,11 @@ public class RecipeController {
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
 
         return "redirect:/recipe/" + savedRecipeCommand.getId() + "/show";
+    }
+
+    @DeleteMapping("/recipe/{id}/delete")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable String id) {
+        recipeService.deleteRecipeCommandById(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
     }
 }
