@@ -1,5 +1,6 @@
 package guru.springframework.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Notes {
     private Long id;
 
     @OneToOne
+    @JsonBackReference
     private Recipe recipe;
 
     @Lob

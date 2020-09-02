@@ -43,7 +43,7 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipes() {
+    public void getRecipesTest() {
 
         Recipe recipe = new Recipe();
         Set<Recipe> recipesData = new HashSet<>();

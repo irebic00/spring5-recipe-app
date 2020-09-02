@@ -1,5 +1,6 @@
 package guru.springframework.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Ingredient {
     private UnitOfMeasure uom;
 
     @ManyToOne
+    @JsonBackReference
     private Recipe recipe;
 
 }

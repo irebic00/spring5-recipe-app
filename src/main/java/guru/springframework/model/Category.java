@@ -1,5 +1,6 @@
 package guru.springframework.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +20,8 @@ public class Category {
     private String description;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER) // remove this FetchType and use org.springframework.orm.hibernate4.HibernateTransactionManager
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property="id")
+    @JsonIgnore
     private Set<Recipe> recipes = new HashSet<>();
 
     @Override

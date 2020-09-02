@@ -1,5 +1,6 @@
 package guru.springframework.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Recipe {
     private Difficulty difficulty;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @JsonManagedReference
     private Set<Ingredient> ingredients = new HashSet<>();
 
     @Lob
@@ -41,9 +43,11 @@ public class Recipe {
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property="id")
     private Set<Category> categories = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Notes notes;
 
     public void setNotes(Notes notes) {
