@@ -6,6 +6,7 @@ import guru.springframework.converter.ModelConverter;
 import guru.springframework.exception.NotFoundException;
 import guru.springframework.model.Ingredient;
 import guru.springframework.model.Recipe;
+import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,13 @@ public class IngredientServiceImpl implements IngredientService {
 
     private final RecipeRepository recipeRepository;
 
+    private final IngredientRepository ingredientRepository;
+
     private final ModelConverter modelConverter;
 
-    public IngredientServiceImpl(RecipeRepository recipeRepository, ModelConverter modelConverter) {
+    public IngredientServiceImpl(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, ModelConverter modelConverter) {
         this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
         this.modelConverter = modelConverter;
     }
 
@@ -82,5 +86,20 @@ public class IngredientServiceImpl implements IngredientService {
         recipeRepository.save(recipe);
 
         return ingredientCommand;
+    }
+
+    @Override
+    public void deleteIngredientById(Long recipeId, Long ingredientId) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundException("Recipe not found"));
+        Ingredient ingredient = recipe
+                .getIngredients()
+                .stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Ingredient not found"));
+
+        recipe.getIngredients().remove(ingredient);
+        ingredientRepository.delete(ingredient);
+        recipeRepository.save(recipe);
     }
 }

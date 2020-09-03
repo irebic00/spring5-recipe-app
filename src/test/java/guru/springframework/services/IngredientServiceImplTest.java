@@ -4,6 +4,7 @@ import guru.springframework.commands.IngredientCommand;
 import guru.springframework.converter.ModelConverter;
 import guru.springframework.model.Ingredient;
 import guru.springframework.model.Recipe;
+import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,9 @@ public class IngredientServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    IngredientRepository ingredientRepository;
+
     ModelConverter modelConverter;
 
     IngredientService ingredientService;
@@ -28,7 +32,7 @@ public class IngredientServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         modelConverter = new ModelConverter();
-        ingredientService = new IngredientServiceImpl(recipeRepository, modelConverter);
+        ingredientService = new IngredientServiceImpl(recipeRepository, ingredientRepository, modelConverter);
     }
 
     @Test
@@ -90,5 +94,27 @@ public class IngredientServiceImplTest {
         Mockito.verify(recipeRepository, Mockito.times(1)).findById(Mockito.anyLong());
         Mockito.verify(recipeRepository, Mockito.times(1)).save(Mockito.any(Recipe.class));
 
+    }
+
+    @Test
+    public void testDeleteIngredientCommand() throws Exception {
+        //given
+        IngredientCommand command = new IngredientCommand();
+        command.setId(3L);
+        command.setRecipeId(2L);
+
+        Recipe savedRecipe = new Recipe();
+        savedRecipe.addIngredient(new Ingredient());
+        savedRecipe.getIngredients().iterator().next().setId(3L);
+
+        Mockito.when(recipeRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(savedRecipe));
+
+        //when
+        ingredientService.deleteIngredientById(2L, 3L);
+
+        //then
+        Mockito.verify(recipeRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(recipeRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verify(ingredientRepository, Mockito.times(1)).delete(Mockito.any());
     }
 }

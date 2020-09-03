@@ -7,12 +7,10 @@ import guru.springframework.exception.NotFoundException;
 import guru.springframework.services.IngredientService;
 import guru.springframework.services.RecipeService;
 import guru.springframework.services.UnitOfMeasureService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class IngredientController {
@@ -81,5 +79,11 @@ public class IngredientController {
         model.addAttribute("uomList",  unitOfMeasureService.listAllUoms());
 
         return "recipe/ingredient/ingredientForm";
+    }
+
+    @DeleteMapping("/recipe/{recipeId}/ingredients/{ingredientId}/delete")
+    public ResponseEntity<Void> deleteIngredient (@PathVariable String recipeId, @PathVariable String ingredientId) {
+        ingredientService.deleteIngredientById(Long.valueOf(recipeId), Long.valueOf(ingredientId));
+        return ResponseEntity.noContent().build();
     }
 }

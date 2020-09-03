@@ -130,4 +130,12 @@ public class IngredientControllerTest {
         Mockito.verify(recipeService, Mockito.times(1)).findRecipeCommandById(Mockito.anyLong());
 
     }
+
+    @Test
+    public void testDeleteIngredient() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/recipe/1/ingredients/1/delete"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        Mockito.verify(ingredientService, Mockito.times(1)).deleteIngredientById(Mockito.anyLong(), Mockito.anyLong());
+    }
 }
