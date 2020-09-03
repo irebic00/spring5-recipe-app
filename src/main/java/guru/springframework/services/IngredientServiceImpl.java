@@ -4,6 +4,7 @@ import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converter.ModelConverter;
 import guru.springframework.exception.NotFoundException;
+import guru.springframework.model.Ingredient;
 import guru.springframework.model.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -33,19 +34,53 @@ public class IngredientServiceImpl implements IngredientService {
             throw new NotFoundException("Recipe not found!");
         }
 
-        Set<IngredientCommand> ingredients = recipeCommand.getIngredients();
-        if (ingredients.isEmpty()) {
-            throw new NotFoundException("Ingredients not found!");
-        }
-
-        List<IngredientCommand> ingredientCommands = ingredients
+        IngredientCommand ingredientCommand = recipeCommand
+                .getIngredients()
                 .stream()
                 .filter(ingredient -> ingredient.getId().equals(ingredientId))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+                .get(0);
         try {
-            return ingredientCommands.get(0);
-        } catch (IndexOutOfBoundsException exception){
+            ingredientCommand.setRecipeId(recipeId);
+            return ingredientCommand;
+        } catch (NullPointerException exception){
             throw new NotFoundException("Ingredient not found!");
         }
+    }
+
+    @Override
+    public IngredientCommand saveIngredientCommand(IngredientCommand ingredientCommand) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(ingredientCommand.getRecipeId());
+        if (!recipeOptional.isPresent()) {
+            throw new NotFoundException("Recipe not found");
+        }
+        Recipe recipe = recipeOptional.get();
+
+        Set<Ingredient> ingredients = recipe.getIngredients();
+        if (ingredients.stream().noneMatch(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))) {
+            Ingredient newIngredient = modelConverter.convertValue(ingredientCommand, Ingredient.class);
+            newIngredient.setRecipe(recipe);
+            recipe.addIngredient(newIngredient);
+            recipeRepository.save(recipe);
+            ingredientCommand.setId(newIngredient.getId());
+            return ingredientCommand;
+        }
+
+        List<Ingredient> selectedIngredient = ingredients
+                .stream()
+                .filter(i -> i.getId().equals(ingredientCommand.getId()))
+                .collect(Collectors.toList());
+        if (selectedIngredient.isEmpty()) {
+            throw new NotFoundException("Selected ingredient is not found for given ricipe");
+        }
+
+        recipe.getIngredients().remove(selectedIngredient.get(0));
+
+        Ingredient newIngredient = modelConverter.convertValue(ingredientCommand, Ingredient.class);
+        newIngredient.setRecipe(recipe);
+        recipe.getIngredients().add(newIngredient);
+        recipeRepository.save(recipe);
+
+        return ingredientCommand;
     }
 }
