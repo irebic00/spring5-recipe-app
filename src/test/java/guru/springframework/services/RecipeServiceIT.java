@@ -1,11 +1,9 @@
 package guru.springframework.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converter.ModelConverter;
 import guru.springframework.model.Recipe;
 import guru.springframework.repositories.RecipeRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
