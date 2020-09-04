@@ -27,6 +27,10 @@
                     <div class="panel-heading">
                         <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
                     </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-primary" href="#"
+                           th:href="@{'/recipe/' + ${recipe.id} + '/image'}" role="button">Change Image</a>
+                    </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
@@ -36,6 +40,11 @@
                                 <ul th:each="category : ${recipe.categories}">
                                     <li th:text="${category.description}">cat one</li>
                                 </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../../static/images/gudica.jpeg"
+                                     th:src="@{/images/janje.jpeg}"
+                                     width="200" height="200">
                             </div>
                         </div>
                         <div class="row">
@@ -90,7 +99,7 @@
                                 <h1 class="panel-title">Ingredients</h1>
                             </div>
                             <div class="col-md-1">
-                                <a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
+                                <a class="btn btn-primary" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
                             </div>
                         </div>
                     </div>
