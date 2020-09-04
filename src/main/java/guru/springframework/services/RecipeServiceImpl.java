@@ -29,7 +29,7 @@ public class RecipeServiceImpl implements RecipeService {
         log.debug("this is lombok thingies");
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
-        return new HashSet<Recipe>(recipes);
+        return new HashSet<>(recipes);
     }
 
     @Override

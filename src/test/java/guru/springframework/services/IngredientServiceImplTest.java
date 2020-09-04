@@ -29,18 +29,18 @@ public class IngredientServiceImplTest {
     IngredientService ingredientService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         modelConverter = new ModelConverter();
         ingredientService = new IngredientServiceImpl(recipeRepository, ingredientRepository, modelConverter);
     }
 
     @Test
-    public void findByRecipeIdAndId() throws Exception {
+    public void findByRecipeIdAndId() {
     }
 
     @Test
-    public void findByRecipeIdAndReceipeIdHappyPath() throws Exception {
+    public void findByRecipeIdAndReceipeIdHappyPath() {
         //given
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -71,7 +71,7 @@ public class IngredientServiceImplTest {
     }
 
     @Test
-    public void testSaveRecipeCommand() throws Exception {
+    public void testSaveRecipeCommand() {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(3L);
@@ -97,7 +97,7 @@ public class IngredientServiceImplTest {
     }
 
     @Test
-    public void testDeleteIngredientCommand() throws Exception {
+    public void testDeleteIngredientCommand() {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(3L);
