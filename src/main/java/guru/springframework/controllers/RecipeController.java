@@ -55,22 +55,4 @@ public class RecipeController {
         recipeService.deleteRecipeCommandById(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(Exception exception) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("errors/404Error");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView badRequest(Exception exception) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("errors/400Error");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }
 }
