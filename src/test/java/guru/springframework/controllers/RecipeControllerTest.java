@@ -91,11 +91,28 @@ public class RecipeControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        //.param("id", "")
-                        //.param("description", "some string")
+                        .param("id", "")
+                        .param("description", "some string")
+                        .param("directions", "some directions")
                         )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/recipe/2/show"));
+    }
+
+    @Test
+    public void testPostNewRecipeFormFailedValidation() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(2L);
+
+        Mockito.when(recipeService.saveRecipeCommand(Mockito.any())).thenReturn(command);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", "")
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("recipe"))
+                .andExpect(MockMvcResultMatchers.view().name("recipe/recipeForm"));
     }
 
     @Test
