@@ -12,6 +12,7 @@ workflows:
         steps:
           - checkout
           - run: mvn test
-          - run: bash <(curl -s https://codecov.io/bash)
+          - run:
+              command: bash <(curl -s https://codecov.io/bash)
           - store_artifacts:
               path: target
