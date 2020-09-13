@@ -6,4 +6,12 @@ orbs:
 workflows:
   maven_test:
     jobs:
-      - maven/test # checkout, build, test, and upload test results
+      build:
+        environment:
+          CODECOV_TOKEN="e40eac21-f4da-4600-bd61-3a379874f8e4"
+        steps:
+          - checkout
+          - run: mvn test
+          - run: bash <(curl -s https://codecov.io/bash)
+          - store_artifacts:
+              path: target
