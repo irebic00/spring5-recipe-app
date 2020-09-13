@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 orbs:
   maven: circleci/maven@0.0.12
@@ -13,6 +13,7 @@ workflows:
           - checkout
           - run: mvn test
           - run:
+              name: Export test coverage to codecov
               command: bash <(curl -s https://codecov.io/bash)
           - store_artifacts:
               path: target
