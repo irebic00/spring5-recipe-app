@@ -38,12 +38,12 @@ public class ImageController {
     }
 
     @GetMapping("recipe/{id}/recipeimage")
-    public String showUploadForm(@PathVariable String id, HttpServletResponse response) throws IOException {
+    public String showUploadForm(@PathVariable Long id, HttpServletResponse response) throws IOException {
 
         response.setContentType("image/jpeg");
-        byte[] image = ArrayUtils.toPrimitive(recipeService.findRecipeCommandById(Long.valueOf(id)).getImage());
+        byte[] image = ArrayUtils.toPrimitive(recipeService.findRecipeCommandById(id).getImage());
         if (image == null) {
-            throw new NotFoundException("This recipe does not have an image");
+            throw new NotFoundException("No image found for recipe with id=" + id);
         }
         InputStream is = new ByteArrayInputStream(image);
         IOUtils.copy(is, response.getOutputStream());
